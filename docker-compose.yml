@@ -1,0 +1,19 @@
+# ⚠️ 개발 및 테스트용 구성입니다. 운영 환경에서 사용하지 마세요!
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: social-login-mysql
+    restart: always
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: 1234
+      MYSQL_DATABASE: google_login_db
+      MYSQL_USER: soyeon
+      MYSQL_PASSWORD: testmysql
+    volumes:
+      - mysql-data:/var/lib/mysql
+
+volumes:
+  mysql-data:
