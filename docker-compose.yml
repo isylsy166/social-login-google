@@ -3,10 +3,10 @@
 services:
   mysql:
     image: mysql:8.0
-    container_name: social-login-mysql
+    container_name: google_login_db
     restart: always
     ports:
-      - "3306:3306"
+      - "3306:3306" # 호스트와 컨테이너의 포트 매핑
     environment:
       MYSQL_ROOT_PASSWORD: 1234
       MYSQL_DATABASE: google_login_db
@@ -17,3 +17,6 @@ services:
 
 volumes:
   mysql-data:
+
+
+# docker-compose up -d 명령어를 사용해서 MySQL을 도커로 실행하기
