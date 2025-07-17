@@ -1,12 +1,15 @@
 package com.login.google.config;
 
+import com.login.google.jwt.JwtTokenProvider;
 import com.login.google.oauth.CustomOAuth2UserService;
+import com.login.google.oauth.OAuth2SuccessHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @RequiredArgsConstructor
@@ -15,7 +18,7 @@ public class SecurityConfig {
     private final CustomOAuth2UserService customOAuth2UserService;
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http, OAuth2SuccessHandler oAuth2SuccessHandler) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable) // 실습 목적: CSRF 비활성화
                 .formLogin(AbstractHttpConfigurer::disable)
@@ -27,11 +30,12 @@ public class SecurityConfig {
                 )
 
                 .oauth2Login(oauth -> oauth
-                                .userInfoEndpoint(userInfo -> userInfo
-                                        .userService(customOAuth2UserService)
-                                )
-                        // JWT 발급 핸들러 나중에 여기에 넣을 예정
-                );
+                        .successHandler(oAuth2SuccessHandler)
+                        .userInfoEndpoint(userInfo -> userInfo
+                                .userService(customOAuth2UserService)
+                        )
+                )
+                .addFilterBefore(new JwtAuthenticationFilter(JwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
