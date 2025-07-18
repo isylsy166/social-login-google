@@ -50,7 +50,7 @@ src
 * Lombok
 
 ---
-## 🚀 실행 방법
+## DB 실행
 1️⃣ MySQL 컨테이너 실행 (Docker)
 
     docker compose up -d
