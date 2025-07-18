@@ -4,6 +4,43 @@ Spring Boot와 Google OAuth2를 활용한 구글 소셜 로그인 구현 실습 
 
 ---
 
+## 프로젝트 구조
+```yaml
+src
+└── main
+    ├── java
+    │   └── com.example.sociallogin
+    │       ├── SocialLoginGoogleApplication.java # Spring Boot 메인 실행 클래스
+    │       │
+    │       ├── config                        
+    │       │   ├── SecurityConfig.java            # Spring Security 설정(OAuth로그인 & 필터) 
+    │       │   └── JwtAuthenticationFilter.java   # 요청이 오면 토큰 검증해주는 필터
+    │       │
+    │       ├── jwt                        
+    │       │   └── JwtTokenProvider.java          # JWT 생성, 파싱, 검증
+    │       │
+    │       ├── oauth       
+    │       │   ├── CustomOAuth2User # 구글에서 받은 사용자 정보를 담는 클래스
+    │       │   ├── CustomOAuth2UserService.java # 구글에서 받은 사용자 정보로 유저 생성/조회 처리
+    │       │   └── OAuth2SuccessHandler.java # 로그인 성공 시 JWT 발급 후 응답처리
+    │       │
+    │       ├── domain               
+    │       │   ├── User.java                 # 유저 테이블 매핑
+    │       │   └── UserRepository.java       # 유저를 DBdptj 조회/저장할 때 사용하는 인터페이스
+    │       │
+    │       ├── controller                    
+    │       │   └── UserController.java       # 테스트용 API
+    │       │
+    │       ├── dto                           # 응답/요청 DTO
+    │       │   └── UserResponseDto.java
+    │       │
+    │       └── service
+    │           └── UserService.java
+    │
+    └── resources
+        └── application.properties # DB 정보, JWT 시크릿 등 설정값 관리
+```
+
 ## 🛠 기술 스택
 * Spring Boot
 * Spring Security
