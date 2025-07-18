@@ -16,6 +16,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 
     private final CustomOAuth2UserService customOAuth2UserService;
+    private final JwtTokenProvider jwtTokenProvider;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http, OAuth2SuccessHandler oAuth2SuccessHandler) throws Exception {
@@ -35,7 +36,7 @@ public class SecurityConfig {
                                 .userService(customOAuth2UserService)
                         )
                 )
-                .addFilterBefore(new JwtAuthenticationFilter(JwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
